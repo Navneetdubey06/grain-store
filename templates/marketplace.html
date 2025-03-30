@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Surplus Food Marketplace</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Add a New Listing</h2>
+            <form action="/marketplace" method="POST">
+                <label for="crop">Crop/Item Name:</label>
+                <input type="text" id="crop" name="crop" required>
+
+                <label for="quantity">Quantity (in kg):</label>
+                <input type="number" id="quantity" name="quantity" required>
+
+                <label for="price">Price (per kg):</label>
+                <input type="number" id="price" name="price" required>
+
+                <button type="submit">Add Listing</button>
+            </form>
+        </section>
+        <section>
+            <h2>Available Listings</h2>
+            <ul id="listings">
+                {% for listing in listings %}
+                    <li>{{ listing.crop }} - {{ listing.quantity }} kg @ ₹{{ listing.price }}/kg</li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section id="pagination">
+            <!-- Pagination buttons will be dynamically added -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Surplus Food Platform</p>
+    </footer>
+    <script src="/static/scripts.js"></script>
+</body>
+</html>
