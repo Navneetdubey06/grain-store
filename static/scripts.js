@@ -1,47 +1,30 @@
-// Basic JavaScript functionality
+const socket = io();
 
-// Search function for marketplace
-function searchListings() {
-    const query = document.getElementById("search-query").value.toLowerCase();
-    const listings = document.querySelectorAll("#listings li");
-
-    listings.forEach(listing => {
-        if (listing.textContent.toLowerCase().includes(query)) {
-            listing.style.display = "block";
-        } else {
-            listing.style.display = "none";
-        }
-    });
+if (typeof userId !== 'undefined') {
+    socket.emit('join', { user_id: userId });
 }
 
-// Pagination function
-let currentPage = 1;
-const listingsPerPage = 5;
+socket.on('receive_message', (data) => {
+    const messageList = document.querySelector('.list-group');
+    const newMessage = document.createElement('li');
+    newMessage.classList.add('list-group-item');
+    newMessage.innerHTML = `
+        <h5>From: User ${data.sender_id}</h5>
+        <p>${data.content}</p>
+        <small class="text-muted">Just now</small>
+    `;
+    messageList.prepend(newMessage);
+});
 
-function paginateListings() {
-    const listings = Array.from(document.querySelectorAll("#listings li"));
-    const totalPages = Math.ceil(listings.length / listingsPerPage);
-
-    listings.forEach((listing, index) => {
-        listing.style.display =
-            index >= (currentPage - 1) * listingsPerPage && index < currentPage * listingsPerPage
-                ? "block"
-                : "none";
-    });
-
-    const paginationContainer = document.getElementById("pagination");
-    paginationContainer.innerHTML = "";
-
-    for (let i = 1; i <= totalPages; i++) {
-        const button = document.createElement("button");
-        button.textContent = i;
-        button.onclick = () => {
-            currentPage = i;
-            paginateListings();
-        };
-        paginationContainer.appendChild(button);
+window.addEventListener('beforeunload', () => {
+    if (typeof userId !== 'undefined') {
+        socket.emit('leave', { user_id: userId });
     }
-}
+});
 
-// Call pagination on page load
-paginateListings();
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+    });
+}
