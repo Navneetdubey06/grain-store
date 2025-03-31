@@ -3,7 +3,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 #databse setup
-db_config={'host':'MSI','user':'root','password':'123456789','database':'surplus_platform'}
+db_config={'host':'localhost','user':'root','password':'123456789','database':'surplus_platform'}
 # Homepage Route
 @app.route('/')
 def home():
